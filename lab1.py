@@ -1,4 +1,3 @@
-# Программа подсчета слов в файле
 import os
 import re
 from statistics import median
@@ -15,11 +14,16 @@ def get_median_words_count(text):
 
 def get_words(text):
     text = text.replace("\n", " ")
-    text = text.replace(",", "").replace(".", "").replace("?", "").replace("!", "")
+    text = text.replace(",", "").replace(".", "").\
+        replace("?", "").replace("!", "")
     text = text.lower()
     words = text.split()
-    words.sort()
     return words
+
+
+def sort_words(words):
+    sort = sorted(words, key=lambda a: len(a))
+    return sort
 
 
 def get_words_dict(words):
@@ -33,35 +37,32 @@ def get_words_dict(words):
     return words_dict
 
 
-def get_top_ngrams(text, n=4, ktop=10):
-    result = {}
+def get_top_ngrams(words, n, ktop):
+    if not n:
+        n = 4
+    if not ktop:
+        ktop = 10
+    to_print_list = sort_words(words)
+    print(to_print_list)
+    for i in range(len(to_print_list), 0, -1):
+        if int(ktop) > 0 and len(to_print_list[i - 1]) >= int(n):
+            for j in range(0, int(n)):
+                print(to_print_list[i - 1][j], end="")
+            print("")
+            ktop -= 1
 
-    def count_anagrams(word: str):
-        word_len = len(word)
-
-        for i in range(word_len):
-            if i + n > word_len:
-                break
-
-            anagram = word[i:i + n]
-            result[anagram] = text.count(anagram)
-
-        # creating a dict of n-grams
-    for word in text:
-        count_anagrams(word)
-
-        # getting top k of n-grams
-    while len(result) > ktop:
-        result_keys = list(result.keys())
-        min_key = result_keys[0]
-
-        for key in result_keys[1:]:
-            if result[key] < result[min_key]:
-                min_key = key
-
-        result.pop(min_key)
-
-    return result
+def print_result(text, words, ktop, ngrams, words_dict):
+    print(text)
+    print(f"Кол-во слов: {get_words(text)}")
+    print(f"Кол-во уникальных слов: {len(words_dict)}")
+    print(f"Кол-во предложений: {len(get_average_words_count(text))}")
+    print(f"Average count in sentence: "
+          f"{len(words) / len(get_average_words_count(text))}")
+    print(f"Median count in sentence: {get_median_words_count(text)}")
+    get_top_ngrams(words, int(ngrams), int(ktop))
+    print("Все использованные слова:")
+    for word in words_dict:
+        print(word.ljust(20), words_dict[word])
 
 
 def main():
@@ -73,18 +74,9 @@ def main():
             text = file.read()
         words = get_words(text)
         words_dict = get_words_dict(words)
-        print(text)
-        print(f"Кол-во слов: {len(words)}")
-        print(f"Кол-во уникальных слов: {len(words_dict)}")
-        print(f"Кол-во предложений: {len(get_average_words_count(text))}")
-        print(f"Кол-во предложений: {get_average_words_count(text)}")
-        print(f"Average count in sentence: {len(words)/len(get_average_words_count(text))}")
-        print(f"Median count in sentence: ", end=" ")
-        get_median_words_count(text)
-        print("top: ", get_top_ngrams(words))
-        print("Все использованные слова:")
-        for word in words_dict:
-            print(word.ljust(20), words_dict[word])
+        ngrams = input("Enter ngrams: ")
+        ktop = input("Enter ngrams: ")
+        print_result(text, words, ktop, ngrams, words_dict)
 
 
 if __name__ == "__main__":
