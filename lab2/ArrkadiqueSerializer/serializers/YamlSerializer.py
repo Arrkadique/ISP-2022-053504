@@ -11,11 +11,6 @@ from ArrkadiqueSerializer.parsers import YamlParser
 
 
 class YamlSerializer():
-
-    __buf = 0
-    __gap = 0
-    __is_blocked_gaps = False
-    __result = ""
     __parser = None
 
     def __init__(self):
@@ -29,14 +24,11 @@ class YamlSerializer():
         return self._serialize(obj)
 
     def loads(self, source: str) -> any:
-        return self.__parser.parse(source)
+        return self.__parser._parse(source)
 
     def load(self, file_path: str) -> any:
-        obj = None
-        with open(file_path) as file:
-            _str = file.read()
-            obj = self.loads(_str)
-        return obj
+        with open(file_path, 'r') as file:
+            return self.loads(file.read())
 
     def _serialize(self, obj) -> str:
         return yaml.dump(self._choosing_type(obj), sort_keys=False)

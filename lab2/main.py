@@ -9,6 +9,9 @@ def f(x):
     a = 123
     return math.sin(x * a * c)
 
+def faweq():
+    a = 123
+    print(a)
 
 class asdf:
     __we = None
@@ -43,10 +46,12 @@ def main():
     if callable(getattr(qwe, '__class__')):
         print(getattr(qwe, 'qwer').__class__)
     with open("/home/arkady/dev/data.txt", "w") as file:
-        file.write(ser.dumps(f))
+        file.write(ser.dumps(faweq))
         file.close()
 
     with open("/home/arkady/dev/data.txt", "r") as file:
+        qweeqweqwe = ser.loads(file.read())
+        qweeqweqwe()
         file.close()
 
 
