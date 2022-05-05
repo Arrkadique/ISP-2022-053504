@@ -48,7 +48,7 @@ class YamlSerializer(BaseSerializer):
         elif type(obj) == ModuleType:
             res = self._ser_module(obj)
         elif isinstance(obj, object):
-            res = self._inspect_obj(obj)
+            res = self._ser_obj(obj)
         return res
 
     def _ser_list(self, obj) -> list:

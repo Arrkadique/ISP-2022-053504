@@ -1,6 +1,6 @@
 import inspect
 import imp
-from types import ModuleType
+from types import ModuleType, FunctionType
 
 import toml as toml
 
@@ -28,7 +28,7 @@ class TomlSerializer(BaseSerializer):
             return self.loads(file.read())
 
     def loads(self, source):
-        return self.__parser._parse(source)
+        return self.__parser._parse(toml.loads(source))
 
     def _serialize(self, obj):
         if type(obj) in (int, float, bytes, str, bool, None, type(None)):
@@ -50,6 +50,7 @@ class TomlSerializer(BaseSerializer):
         elif type(obj) == type(None):
             res[f'{DTO_TYPES.NONE}'] = "null"
         return res
+
 
     def _choosing_type(self, obj):
         if type(obj) in (int, float, bool, str, bytes, type(None), None):
@@ -93,12 +94,12 @@ class TomlSerializer(BaseSerializer):
                 res[a[0]] = self._choosing_type(a[1])
             return res
 
-    def _ser_func(self, obj) -> dict:
+    def _ser_func(self, obj: FunctionType) -> dict:
         res = {}
         res[f'{DTO.dto_type}'] = f'{DTO_TYPES.FUNC}'
         res[f'{DTO.name}'] = self._choosing_type(obj.__name__)
         res[f'{DTO.global_names}'] = self._choosing_type(attributes.get_globals(obj))
-        res[f'{DTO.code}'] = self._choosing_type( attributes.get_code_fields(obj.__code__))
+        res[f'{DTO.code}'] = self._choosing_type(attributes.get_code_fields(obj.__code__))
         res[f'{DTO.closure}'] = self._choosing_type(obj.__closure__)
         return res
 

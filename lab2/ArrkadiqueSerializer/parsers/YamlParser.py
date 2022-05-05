@@ -49,8 +49,8 @@ class YamlParser():
 
     def _prs_class(self, obj) -> type:
         obj.pop(DTO.dto_type)
-        name = self._parse_types(obj[DTO.name])
-        fields = self._parse_types(obj[DTO.fields])
+        name = self._choosing_type(obj[DTO.name])
+        fields = self._choosing_type(obj[DTO.fields])
         bases = (object,)
         if "__bases__" in fields:
             bases = tuple(fields["__bases__"])
@@ -64,7 +64,7 @@ class YamlParser():
         code = self._choosing_type(obj[DTO.code])
         closure = self._choosing_type(obj[DTO.closure])
 
-        func_code = CodeType(
+        res_code = CodeType(
             code["co_argcount"], code["co_posonlyargcount"],
             code["co_kwonlyargcount"], code["co_nlocals"],
             code["co_stacksize"], code["co_flags"],
@@ -75,7 +75,7 @@ class YamlParser():
             tuple(code["co_freevars"]), tuple(code["co_cellvars"]),
         )
 
-        res = FunctionType(func_code, globals, name, closure)
+        res = FunctionType(res_code, globals, name, closure)
         res.__globals__["__builtins__"] = __import__("builtins")
         return res
 
