@@ -22,3 +22,8 @@ class DTO_TYPES:
     OBJ = "obj"
     DICT = "dict"
     LIST = "list"
+    NUMBER = "number"
+    STRING = "str"
+    BYTES = "bytes"
+    BOOL = "bool"
+    NONE = "none"

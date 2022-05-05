@@ -33,8 +33,7 @@ class YamlParser():
         elif obj[DTO.dto_type] == DTO_TYPES.FUNC:
             obj = self._prs_func(obj)
         elif obj[DTO.dto_type] == DTO_TYPES.CLASS:
-            pass
-            #obj = self._parse_class_type(obj)
+            obj = self._prs_class(obj)
         elif obj[DTO.dto_type] == DTO_TYPES.FUNC:
             obj = self._prs_obj(obj)
         elif obj[DTO.dto_type] == DTO_TYPES.MODULE:
@@ -46,6 +45,16 @@ class YamlParser():
         obj.pop(DTO.dto_type)
         for a in obj.items():
             res[self._choosing_type(a[0])] = self._choosing_type(a[1])
+        return res
+
+    def _prs_class(self, obj) -> type:
+        obj.pop(DTO.dto_type)
+        name = self._parse_types(obj[DTO.name])
+        fields = self._parse_types(obj[DTO.fields])
+        bases = (object,)
+        if "__bases__" in fields:
+            bases = tuple(fields["__bases__"])
+        res = type(name, bases, fields)
         return res
 
     def _prs_func(self, obj: dict) -> FunctionType:

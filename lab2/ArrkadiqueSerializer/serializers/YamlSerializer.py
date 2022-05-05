@@ -8,9 +8,10 @@ from ..dto.DTO import DTO
 from ..dto.DTO import DTO_TYPES
 from .. import attributes
 from ArrkadiqueSerializer.parsers import YamlParser
+from ..BaseSerializer import BaseSerializer
 
 
-class YamlSerializer():
+class YamlSerializer(BaseSerializer):
     __parser = None
 
     def __init__(self):
@@ -26,8 +27,8 @@ class YamlSerializer():
     def loads(self, source: str) -> any:
         return self.__parser._parse(source)
 
-    def load(self, file_path: str) -> any:
-        with open(file_path, 'r') as file:
+    def load(self, filepath: str) -> any:
+        with open(filepath, 'r') as file:
             return self.loads(file.read())
 
     def _serialize(self, obj) -> str:
@@ -42,8 +43,12 @@ class YamlSerializer():
             res = self._ser_dict(obj)
         elif type(obj) == FunctionType:
             res = self._ser_func(obj)
+        elif type(obj) == type:
+            res = self._ser_class(obj)
         elif type(obj) == ModuleType:
             res = self._ser_module(obj)
+        elif isinstance(obj, object):
+            res = self._inspect_obj(obj)
         return res
 
     def _ser_list(self, obj) -> list:
@@ -57,6 +62,13 @@ class YamlSerializer():
         res[f'{DTO.dto_type}'] = f'{DTO_TYPES.DICT}'
         for a in obj.items():
             res[self._choosing_type(a[0])] = self._choosing_type(a[1])
+        return res
+
+    def _ser_obj(self, obj) -> dict:
+        res = {}
+        res[f'{DTO.dto_type}'] = f'{DTO_TYPES.OBJ}'
+        res[f'{DTO.base_class}'] = self._choosing_type(obj.__class__)
+        res[f'{DTO.fields}'] = self._choosing_type(obj.__dict__)
         return res
 
     def _ser_func(self, obj: FunctionType) -> dict:
@@ -76,4 +88,12 @@ class YamlSerializer():
             res[f'{DTO.fields}'] = self._choosing_type(None)
         else:
             res[f'{DTO.fields}'] = self._choosing_type(attributes.get_actual_module_fields(obj))
+        return res
+
+    def _ser_class(self, obj: type) -> dict:
+        res = {}
+        res[f'{DTO.dto_type}'] = f'{DTO_TYPES.CLASS}'
+        res[f'{DTO.name}'] = self._choosing_type(obj.__name__)
+        class_fields = attributes.get_class_fields(obj)
+        res[f'{DTO.fields}'] = self._choosing_type(class_fields)
         return res
