@@ -64,9 +64,9 @@ class TomlSerializer(BaseSerializer):
             res = self._ser_list(obj)
         elif type(obj) == dict:
             res = self._ser_dict(obj)
-        elif inspect.isfunction(obj):
+        elif type(obj) == FunctionType:
             res = self._ser_func(obj)
-        elif inspect.isclass(obj):
+        elif type(obj) == type:
             res = self._ser_class(obj)
         elif type(obj) == ModuleType:
             res = self._ser_module(obj)
