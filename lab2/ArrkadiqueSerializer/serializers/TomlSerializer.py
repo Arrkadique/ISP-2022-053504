@@ -14,7 +14,6 @@ class TomlSerializer(BaseSerializer):
     __parser = None
 
     def __init__(self):
-        super.__init__()
         self.__parser = TomlParser()
 
     def dump(self, obj, filepath):
@@ -61,17 +60,17 @@ class TomlSerializer(BaseSerializer):
             else:
                 res = obj
         elif type(obj) in (list, tuple):
-            res = self._inspect_list(obj)
+            res = self._ser_list(obj)
         elif type(obj) == dict:
-            res = self._inspect_dict(obj)
+            res = self._ser_dict(obj)
         elif inspect.isfunction(obj):
-            res = self._inspect_func(obj)
+            res = self._ser_func(obj)
         elif inspect.isclass(obj):
-            res = self._inspect_class(obj)
+            res = self._ser_class(obj)
         elif type(obj) == ModuleType:
-            res = self._inspect_obj_module(obj)
+            res = self._ser_module(obj)
         elif isinstance(obj, object):
-            res = self._inspect_obj(obj)
+            res = self._ser_obj(obj)
         return res
 
     def _ser_list(self, obj) -> dict:
@@ -81,7 +80,7 @@ class TomlSerializer(BaseSerializer):
             return res
         else:
             for i, member in enumerate(obj):
-                res[f'item_{i}'] = self._inspect(member)
+                res[f'item_{i}'] = self._choosing_type(member)
             return res
 
     def _ser_dict(self, obj) -> dict:
@@ -90,15 +89,15 @@ class TomlSerializer(BaseSerializer):
         if obj == {}:
             return res
         else:
-            for item in obj.items():
-                res[item[0]] = self._inspect(item[1])
+            for a in obj.items():
+                res[a[0]] = self._choosing_type(a[1])
             return res
 
     def _ser_func(self, obj) -> dict:
         res = {}
         res[f'{DTO.dto_type}'] = f'{DTO_TYPES.FUNC}'
         res[f'{DTO.name}'] = self._choosing_type(obj.__name__)
-        res[f'{DTO.global_types}'] = self._choosing_type(attributes.get_globals(obj))
+        res[f'{DTO.global_names}'] = self._choosing_type(attributes.get_globals(obj))
         res[f'{DTO.code}'] = self._choosing_type( attributes.get_code_fields(obj.__code__))
         res[f'{DTO.closure}'] = self._choosing_type(obj.__closure__)
         return res

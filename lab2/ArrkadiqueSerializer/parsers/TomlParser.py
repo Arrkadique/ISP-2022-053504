@@ -1,4 +1,6 @@
 
 
 class TomlParser():
-    pass
+
+    def _parse(self, source):
+        pass
