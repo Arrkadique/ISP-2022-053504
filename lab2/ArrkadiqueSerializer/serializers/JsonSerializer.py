@@ -23,10 +23,11 @@ class JsonSerializer(BaseSerializer):
         return self.__result
 
     def load(self, filepath):
-        pass
+        with open(filepath, "r") as file:
+            file.write(self.loads(file.read()))
 
     def loads(self, source) -> any:
-        pass
+        return self.__parser.parse(source)
 
     def _sym(self, symbol):
         self.__result += symbol

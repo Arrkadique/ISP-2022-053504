@@ -2,6 +2,10 @@ import inspect
 import yaml
 from yaml.loader import Loader
 from ArrkadiqueSerializer.serializers.YamlSerializer import YamlSerializer
+from ArrkadiqueSerializer.serializers.TomlSerializer import TomlSerializer
+from ArrkadiqueSerializer.serializers.JsonSerializer import JsonSerializer
+from ArrkadiqueSerializer.parsers.JsonParser import JsonParser
+
 import math
 
 c = 42
@@ -10,7 +14,7 @@ def f(x):
     return math.sin(x * a * c)
 
 def faweq():
-    a = 123
+    a = 125
     print(a)
 
 class asdf:
@@ -41,16 +45,16 @@ def main():
     a = asdf(qwe)
 
 
-    ser = YamlSerializer()
+    ser = JsonSerializer()
+    prs = JsonParser()
 
-    if callable(getattr(qwe, '__class__')):
-        print(getattr(qwe, 'qwer').__class__)
     with open("/home/arkady/dev/data.txt", "w") as file:
         file.write(ser.dumps(faweq))
         file.close()
 
     with open("/home/arkady/dev/data.txt", "r") as file:
         qweeqweqwe = ser.loads(file.read())
+        faweq()
         qweeqweqwe()
         file.close()
 
