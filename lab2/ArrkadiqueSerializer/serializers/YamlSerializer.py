@@ -1,14 +1,11 @@
-import inspect
-import re
-from types import CodeType, ModuleType, FunctionType
+from types import ModuleType, FunctionType
 
 import yaml
-
-from ..dto.DTO import DTO
-from ..dto.DTO import DTO_TYPES
 from .. import attributes
 from ArrkadiqueSerializer.parsers import YamlParser
-from ..BaseSerializer import BaseSerializer
+from ArrkadiqueSerializer.serializers.BaseSerializer import BaseSerializer
+
+from ..dto.DTO import DTO_TYPES, DTO
 
 
 class YamlSerializer(BaseSerializer):

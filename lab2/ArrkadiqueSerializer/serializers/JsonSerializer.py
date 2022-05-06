@@ -1,10 +1,11 @@
 from types import FunctionType, ModuleType
 
-from ..BaseSerializer import BaseSerializer
+from ArrkadiqueSerializer.serializers.BaseSerializer import BaseSerializer
 from ..parsers.JsonParser import JsonParser
 from ..dto.DTO import DTO_TYPES
 from ..dto.DTO import DTO
 from .. import attributes
+
 
 class JsonSerializer(BaseSerializer):
     __result = ""
@@ -17,14 +18,13 @@ class JsonSerializer(BaseSerializer):
         with open(filepath, "w") as file:
             file.write(self.dumps(obj))
 
-
     def dumps(self, obj) -> str:
         self._choosing_type(obj)
         return self.__result
 
     def load(self, filepath):
         with open(filepath, "r") as file:
-            file.write(self.loads(file.read()))
+            return self.loads(file.read())
 
     def loads(self, source) -> any:
         return self.__parser.parse(source)
