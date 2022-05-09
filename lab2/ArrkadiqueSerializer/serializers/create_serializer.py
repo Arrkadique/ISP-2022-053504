@@ -1,7 +1,7 @@
-from ArrkadiqueSerializer.serializers.JsonSerializer import JsonSerializer
-from ArrkadiqueSerializer.serializers.YamlSerializer import YamlSerializer
-from ArrkadiqueSerializer.serializers.TomlSerializer import TomlSerializer
-from ArrkadiqueSerializer.serializers.BaseSerializer import BaseSerializer
+from ArrkadiqueSerializer.serializers.json_serializer import JsonSerializer
+from ArrkadiqueSerializer.serializers.yaml_serializer import YamlSerializer
+from ArrkadiqueSerializer.serializers.toml_serializer import TomlSerializer
+from ArrkadiqueSerializer.serializers.base_serializer import BaseSerializer
 
 SERIALIZERS_MAP = {
     "json": JsonSerializer,

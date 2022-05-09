@@ -1,7 +1,7 @@
 from types import FunctionType, ModuleType
 
-from ArrkadiqueSerializer.serializers.BaseSerializer import BaseSerializer
-from ..parsers.JsonParser import JsonParser
+from ArrkadiqueSerializer.serializers.base_serializer import BaseSerializer
+from ..parsers.json_parser import JsonParser
 from ..dto.DTO import DTO_TYPES
 from ..dto.DTO import DTO
 from .. import attributes

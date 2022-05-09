@@ -13,7 +13,6 @@ class a:
     def _show(self):
         return self.qwe + 2042
 
-
 c = 42
 def f(x):
     a = 123

@@ -4,9 +4,9 @@ import re
 from types import CodeType, FunctionType, ModuleType
 
 from ..dto.DTO import DTO_TYPES,DTO
-from . import JsonTokens
+from . import json_tokens
 
-TOKEN_TYPES = JsonTokens
+TOKEN_TYPES = json_tokens
 
 class JsonParser():
     __tokens: list = []

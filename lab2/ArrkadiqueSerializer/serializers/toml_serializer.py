@@ -4,8 +4,8 @@ import toml as toml
 
 from ..dto.DTO import DTO_TYPES
 from ..dto.DTO import DTO
-from ArrkadiqueSerializer.serializers.BaseSerializer import BaseSerializer
-from ..parsers.TomlParser import TomlParser
+from ArrkadiqueSerializer.serializers.base_serializer import BaseSerializer
+from ..parsers.toml_parser import TomlParser
 from .. import attributes
 
 class TomlSerializer(BaseSerializer):

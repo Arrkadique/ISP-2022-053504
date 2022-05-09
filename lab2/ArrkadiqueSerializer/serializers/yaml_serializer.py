@@ -2,8 +2,8 @@ from types import ModuleType, FunctionType
 
 import yaml
 from .. import attributes
-from ArrkadiqueSerializer.parsers import YamlParser
-from ArrkadiqueSerializer.serializers.BaseSerializer import BaseSerializer
+from ArrkadiqueSerializer.parsers import yaml_parser
+from ArrkadiqueSerializer.serializers.base_serializer import BaseSerializer
 
 from ..dto.DTO import DTO_TYPES, DTO
 
@@ -12,7 +12,7 @@ class YamlSerializer(BaseSerializer):
     __parser = None
 
     def __init__(self):
-        self.__parser = YamlParser.YamlParser()
+        self.__parser = yaml_parser.YamlParser()
 
     def dump(self, obj, filepath):
         with open(filepath, "w") as file:
